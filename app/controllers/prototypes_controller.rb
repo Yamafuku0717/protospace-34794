@@ -3,7 +3,7 @@ class PrototypesController < ApplicationController
   before_action :move_to_index, only: :edit
 
   def index
-    @prototypes = Prototype.all
+    @prototypes = Prototype.includes(:user)
   end
 
   def new
@@ -28,11 +28,10 @@ class PrototypesController < ApplicationController
   end
 
   def update
-    prototype = Prototype.find(params[:id])
-    if prototype.update(prototype_params)
-      redirect_to prototype_path(prototype)
+    @prototype = Prototype.find(params[:id])
+    if @prototype.update(prototype_params)
+      redirect_to prototype_path(@prototype)
     else
-      @prototype = Prototype.new(prototype_params)
       render :edit
     end
   end
